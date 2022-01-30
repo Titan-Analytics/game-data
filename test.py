@@ -4,19 +4,26 @@ from web3 import Web3
 from dotenv import load_dotenv
 
 load_dotenv()
-infura_key = os.environ.get("INFURA_ENDPOINT")
+infura_key = os.environ.get("INFURA")
+pokt_network = os.environ.get("POKT_NETWORK")
+moralis_key = os.environ.get("MORALIS")
 
 exponent = 10 **18
 
 w3 = Web3(Web3.HTTPProvider(infura_key))
 
 lp_address = "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9"
-checksummed_contract = w3.toChecksumAddress(lp_address)
+town_star_address = "0x3Dd98C8A089dBCFF7e8FC8d4f532BD493501Ab7F"
+test_address = "0xf34f0420b588b6cf956f66beabab3f75deb10a63"
 
-with open("abis/aave.json") as f:
-    abi_aave = json.load(f)
 
-contract = w3.eth.contract(address = checksummed_contract, abi = abi_aave)
-data = contract.functions.decimals.call()
+checksummed_contract = w3.toChecksumAddress(town_star_address)
+checksummed_address = w3.toChecksumAddress(test_address)
+
+with open("abis/TOWN.json") as f:
+    town_star = json.load(f)
+
+contract = w3.eth.contract(address = checksummed_contract, abi = town_star)
+data = contract.functions.balanceOf(checksummed_address).call()
 
 print(data)
